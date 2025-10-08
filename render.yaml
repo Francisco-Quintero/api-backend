@@ -3,8 +3,4 @@ services:
     name: api-backend
     env: docker
     plan: free
-    buildCommand: "./gradlew build -x test"
-    startCommand: "java -jar build/libs/api-backend-0.0.1-SNAPSHOT.jar"
-    envVars:
-      - key: JAVA_VERSION
-        value: 17
+    dockerfilePath: ./Dockerfile
