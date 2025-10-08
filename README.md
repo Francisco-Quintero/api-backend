@@ -5,7 +5,7 @@
 Este proyecto corresponde al **backend** del sistema de registro y control de campistas, desarrollado en **Spring Boot** y conectado a una base de datos **Supabase (PostgreSQL)**.
 El propósito principal es gestionar la información de los campistas y el registro de sus comidas durante el evento, permitiendo futuras integraciones con aplicaciones móviles y frontends web.
 
-### 🚀 Características principales
+###🚀 Características principales
 
 * **Gestión de campistas**: registro, consulta y administración de datos personales.
 * **Registro de comidas**: permite confirmar asistencia a cada comida (desayuno, almuerzo, cena) con fecha y hora exacta.
