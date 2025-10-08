@@ -10,7 +10,6 @@ El propósito principal es gestionar la información de los campistas y el regis
 * **Gestión de campistas**: registro, consulta y administración de datos personales.
 * **Registro de comidas**: permite confirmar asistencia a cada comida (desayuno, almuerzo, cena) con fecha y hora exacta.
 * **Integración con Supabase**: conexión directa con una base de datos PostgreSQL alojada en Supabase.
-* **Despliegue en Render**: API pública accesible desde aplicaciones Flutter o React.
 * **UUID autogenerado**: cada campista se identifica de forma única con un UUID generado en la base de datos.
 * **Edad calculada dinámicamente**: la edad del campista se determina a partir de su fecha de nacimiento.
 
