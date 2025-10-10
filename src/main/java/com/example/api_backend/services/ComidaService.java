@@ -25,6 +25,8 @@ public class ComidaService {
     }
 
     public Comida registrar(Comida comida) {
+        comida.setTipoComida(comida.getTipoComida().toLowerCase());
+        comida.setFechaRegistro(java.time.LocalDateTime.now());
         return comidaRepository.save(comida);
     }
 }
