@@ -18,7 +18,7 @@ public class CampistaService {
     }
 
     public List<Campista> listarTodos() {
-        return campistaRepository.findAllByOrderByNombreCompletoAsc();
+        return campistaRepository.findAll();
     }
 
     public Optional<Campista> buscarPorId(UUID id) {
