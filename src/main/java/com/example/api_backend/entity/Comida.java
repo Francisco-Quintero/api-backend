@@ -31,7 +31,4 @@ public class Comida {
 
     @Column(name = "registrado_por")
     private String registradoPor; // nombre de la persona que registró la comida
-
-    @Column(name = "comio", nullable = false)
-    private boolean comio;
 }
