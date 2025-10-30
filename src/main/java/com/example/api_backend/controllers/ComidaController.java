@@ -5,7 +5,6 @@ import com.example.api_backend.services.ComidaService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/comidas")
@@ -24,7 +23,7 @@ public class ComidaController {
     }
 
     @GetMapping("/campista/{id}")
-    public List<Comida> listarPorCampista(@PathVariable UUID id) {
+    public List<Comida> listarPorCampista(@PathVariable String id) {
         return comidaService.listarPorCampista(id);
     }
 
@@ -33,3 +32,4 @@ public class ComidaController {
         return comidaService.registrar(comida);
     }
 }
+

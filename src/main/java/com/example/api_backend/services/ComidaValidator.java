@@ -23,7 +23,7 @@ public class ComidaValidator {
      * para el mismo campista en el día de hoy.
      */
     public void validarRegistroUnicoDiario(Comida comida) {
-        UUID campistaId = comida.getCampistaId();
+        String campistaId = comida.getCampistaId();
         String tipoComidaNormalizado = comida.getTipoComida(); // Ya normalizado
 
         LocalDate today = LocalDate.now();
@@ -39,7 +39,7 @@ public class ComidaValidator {
 
         if (comidaExistente.isPresent()) {
             throw new IllegalStateException(
-                "El campista con ID " + campistaId + " ya registró un(a) **" + tipoComidaNormalizado.toUpperCase() + "** el día de hoy."
+                "El campista ya registró un(a) **" + tipoComidaNormalizado.toUpperCase() + "** el día de hoy."
             );
         }
     }

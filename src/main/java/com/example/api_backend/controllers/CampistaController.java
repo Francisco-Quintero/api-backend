@@ -2,14 +2,14 @@ package com.example.api_backend.controllers;
 
 import com.example.api_backend.entity.Campista;
 import com.example.api_backend.services.CampistaService;
-
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
 @RestController
 @RequestMapping("/api/campistas")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*") // Permite pruebas desde cualquier frontend (puedes restringir luego)
 public class CampistaController {
 
     private final CampistaService campistaService;
@@ -18,40 +18,58 @@ public class CampistaController {
         this.campistaService = campistaService;
     }
 
+    // 📋 GET: Listar todos los campistas
     @GetMapping
-    public List<Campista> listarCampistas() {
-        return campistaService.listarTodos();
+    public ResponseEntity<List<Campista>> listarCampistas() {
+        List<Campista> campistas = campistaService.listarTodos();
+        return ResponseEntity.ok(campistas);
     }
 
-    @GetMapping("/{id}")
-    public Optional<Campista> obtenerPorId(@PathVariable UUID id) {
-        return campistaService.buscarPorId(id);
-    }
+    // 🔍 GET: Buscar campista por ID
+@GetMapping("/{id}")
+public ResponseEntity<?> obtenerPorId(@PathVariable String id) {
+    Optional<Campista> campista = campistaService.obtenerPorId(id);
+    
+    return campista
+            .<ResponseEntity<?>>map(ResponseEntity::ok)
+            .orElseGet(() -> ResponseEntity.status(404).body(Map.of("error", "Campista no encontrado con ID: " + id)));
+            
+}
 
+    // ➕ POST: Registrar nuevo campista
     @PostMapping
-    public Campista crear(@RequestBody Campista campista) {
-        return campistaService.guardar(campista);
+    public ResponseEntity<?> registrarCampista(@RequestBody Campista campista) {
+        try {
+            Campista nuevo = campistaService.guardar(campista);
+            return ResponseEntity.status(201).body(nuevo);
+        } catch (Exception e) {
+            return ResponseEntity.status(400).body(Map.of("error", e.getMessage()));
+        }
     }
 
+    // ✏️ PUT: Actualizar campista existente
     @PutMapping("/{id}")
-    public Campista actualizar(@PathVariable UUID id, @RequestBody Campista campista) {
-        campista.setId(id);
-        return campistaService.guardar(campista);
+    public ResponseEntity<?> actualizarCampista(@PathVariable String id, @RequestBody Campista campista) {
+        try {
+            Campista actualizado = campistaService.actualizar(id, campista);
+            return ResponseEntity.ok(actualizado);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(404).body(Map.of("error", e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(400).body(Map.of("error", e.getMessage()));
+        }
     }
 
+    // 🗑️ DELETE: Eliminar campista por ID
     @DeleteMapping("/{id}")
-    public void eliminar(@PathVariable UUID id) {
-        campistaService.eliminar(id);
-    }
-
-    @GetMapping("/datos-basicos")
-    public List<Map<String, Object>> obtenerDatosBasicos() {
-        return campistaService.listarTodos().stream().map(c -> {
-            Map<String, Object> data = new HashMap<>();
-            data.put("nombre", c.getNombreCompleto());
-            data.put("telefono", c.getTelefono());
-            data.put("foto", c.getFotoUrl());
-            return data;
-        }).toList();
+    public ResponseEntity<?> eliminarCampista(@PathVariable String id) {
+        try {
+            campistaService.eliminar(id);
+            return ResponseEntity.ok(Map.of("mensaje", "Campista eliminado correctamente"));
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(404).body(Map.of("error", e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(400).body(Map.of("error", e.getMessage()));
+        }
     }
 }

@@ -1,22 +1,24 @@
 package com.example.api_backend.repository;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 import com.example.api_backend.entity.Comida;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import java.time.LocalDateTime;
+import java.util.Optional;
 
-@Repository
-public interface ComidaRepository extends JpaRepository<Comida, UUID> {
-    List<Comida> findByCampistaId(UUID campistaId);
+public interface ComidaRepository extends JpaRepository<Comida, String> {
 
+    @Query("""
+        SELECT c FROM Comida c 
+        WHERE c.campistaId = :campistaId 
+        AND c.tipoComida = :tipoComida 
+        AND c.fechaRegistro BETWEEN :inicio AND :fin
+    """)
     Optional<Comida> findByCampistaIdAndTipoComidaAndFechaRegistroBetween(
-        UUID campistaId, 
-        String tipoComida, 
-        LocalDateTime startOfDay, 
-        LocalDateTime endOfDay
+        String campistaId,
+        String tipoComida,
+        LocalDateTime inicio,
+        LocalDateTime fin
     );
 }
+
