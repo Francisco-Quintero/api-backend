@@ -4,6 +4,7 @@ import com.example.api_backend.entity.Campista;
 import com.example.api_backend.repository.CampistaRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -55,4 +56,15 @@ public class CampistaService {
         }
         campistaRepository.deleteById(id);
     }
+
+    public Campista registrarAsistencia(String id, boolean registroAsistencia) {
+        Campista campista = campistaRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Campista no encontrado con ID: " + id));
+
+        campista.setRegistroAsistencia(registroAsistencia);
+        campista.setFechaRegistroAsistencia(LocalDateTime.now());
+
+        return campistaRepository.save(campista);
+    }
+
 }

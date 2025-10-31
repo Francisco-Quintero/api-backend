@@ -26,15 +26,16 @@ public class CampistaController {
     }
 
     // 🔍 GET: Buscar campista por ID
-@GetMapping("/{id}")
-public ResponseEntity<?> obtenerPorId(@PathVariable String id) {
-    Optional<Campista> campista = campistaService.obtenerPorId(id);
-    
-    return campista
-            .<ResponseEntity<?>>map(ResponseEntity::ok)
-            .orElseGet(() -> ResponseEntity.status(404).body(Map.of("error", "Campista no encontrado con ID: " + id)));
-            
-}
+    @GetMapping("/{id}")
+    public ResponseEntity<?> obtenerPorId(@PathVariable String id) {
+        Optional<Campista> campista = campistaService.obtenerPorId(id);
+
+        return campista
+                .<ResponseEntity<?>>map(ResponseEntity::ok)
+                .orElseGet(
+                        () -> ResponseEntity.status(404).body(Map.of("error", "Campista no encontrado con ID: " + id)));
+
+    }
 
     // ➕ POST: Registrar nuevo campista
     @PostMapping
@@ -71,5 +72,15 @@ public ResponseEntity<?> obtenerPorId(@PathVariable String id) {
         } catch (Exception e) {
             return ResponseEntity.status(400).body(Map.of("error", e.getMessage()));
         }
+    }
+
+    @PatchMapping("/{id}/asistencia")
+    public ResponseEntity<Campista> registrarAsistencia(
+            @PathVariable String id,
+            @RequestBody Map<String, Boolean> body) {
+
+        boolean registroAsistencia = body.get("registroAsistencia");
+        Campista campistaActualizado = campistaService.registrarAsistencia(id, registroAsistencia);
+        return ResponseEntity.ok(campistaActualizado);
     }
 }
